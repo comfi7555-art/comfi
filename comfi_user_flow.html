@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COMFI User Flow Diagram</title>
+  <style>
+    body {
+      background-color: #fdf7e7;
+      color: #3a3a3a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      max-width: 800px;
+    }
+    .header h1 {
+      font-family: Georgia, serif;
+      color: #d0385c;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 900;
+    }
+    .header p {
+      font-size: 1rem;
+      color: #7e0022;
+      opacity: 0.8;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      border: 1px solid #e3e3e3;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+      max-width: 100%;
+      width: 1100px;
+      box-sizing: border-box;
+      margin-bottom: 40px;
+      overflow-x: auto;
+    }
+    .btn-container {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    .btn {
+      background-color: #d0385c;
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(208, 56, 92, 0.2);
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .btn:hover {
+      background-color: #5c0018;
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background-color: #febac4;
+      color: #d0385c;
+      box-shadow: none;
+    }
+    .btn-secondary:hover {
+      background-color: #e29fa7;
+      transform: translateY(-2px);
+    }
+    
+    /* Print optimizations */
+    @media print {
+      body {
+        background-color: white;
+        color: black;
+        padding: 0;
+        margin: 0;
+      }
+      .header h1 {
+        color: #d0385c;
+      }
+      .container {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        width: 100%;
+      }
+      .btn-container {
+        display: none;
+      }
+    }
+  </style>
+  <!-- Load Mermaid CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#fdf7e7',
+        primaryTextColor: '#3a3a3a',
+        primaryBorderColor: '#d0385c',
+        lineColor: '#7e0022',
+        secondaryColor: '#fae3e5',
+        tertiaryColor: '#febac4'
+      }
+    });
+  </script>
+</head>
+<body>
+
+  <div class="header">
+    <h1>COMFI User Flow Diagram</h1>
+    <p>A comprehensive visual guide through the custom menstruation care D2C e-commerce platform.</p>
+  </div>
+
+  <div class="btn-container">
+    <button class="btn" onclick="window.print()">Print Flowchart</button>
+    <button class="btn btn-secondary" onclick="window.location.reload()">Reset View</button>
+  </div>
+
+  <div class="container">
+    <pre class="mermaid">
+      flowchart TD
+          Start(["User visits COMFI Website"]) --> Home["Land on Home Page"]
+
+          subgraph Landing ["1. Landing & Exploration"]
+              Home --> BrowseHome["Browse features, reviews, and FAQs"]
+              Home --> SelectPath{"Choose Shopping Path"}
+          end
+
+          SelectPath -- "Diagnostic Quiz" --> TakeQuiz["Navigate to /quiz"]
+          SelectPath -- "Manual Compiler" --> OpenBuilder["Navigate to /shop (Custom Builder)"]
+          SelectPath -- "Direct Shop" --> BrowseCatalog["Navigate to /shop (Catalog Grid)"]
+
+          subgraph Quiz ["2. Diagnostic Recommendation (Fit Quiz)"]
+              TakeQuiz --> RunQuiz["Answer 4 Cycle Questions"]
+              RunQuiz --> CalcScore["Engine compiles scores based on answers"]
+              CalcScore --> FindAnchor["Identify primary needs size"]
+              FindAnchor --> RecommendBox["Generate personalized 20-pad bundle ratios"]
+              RecommendBox --> QuizActions{"User Action"}
+              QuizActions -- "Retake" --> TakeQuiz
+              QuizActions -- "Add Box to Cart" --> AuthQuiz{"Is User Logged In?"}
+              AuthQuiz -- "No" --> LoginQuiz["Redirect to /account?redirect=/quiz"]
+              LoginQuiz --> CompleteAuthQuiz["User logs in or signs up"]
+              CompleteAuthQuiz --> DispatchQuizCart["Add custom mix to cart & redirect to /cart"]
+              AuthQuiz -- "Yes" --> DispatchQuizCart
+          end
+
+          subgraph CustomBuilder ["3. Custom Pack Builder"]
+              OpenBuilder --> InitQty["Quantities set to 0 for all sizes"]
+              InitQty --> QtyAdjust["Click Plus/Minus to adjust sizes in steps of 5"]
+              QtyAdjust --> LivePreview["Render visual pad stack inside live preview box"]
+              LivePreview --> MinCheck{"Is total count >= 10?"}
+              MinCheck -- "No" --> DisableAdd["Lock Cart Button & show helper warning"]
+              MinCheck -- "Yes" --> CalcPricing["Calculate prices & check discount eligibility"]
+              CalcPricing --> DiscountCheck{"Is total count >= 20?"}
+              DiscountCheck -- "Yes" --> ApplyDiscount["Apply 10% bundle discount"]
+              DiscountCheck -- "No" --> NoDiscount["Calculate standard unit pricing"]
+              ApplyDiscount & NoDiscount & DisableAdd --> CustomActions{"User Action"}
+              CustomActions -- "Adjust quantities" --> QtyAdjust
+              CustomActions -- "Add Custom Bundle" --> AuthCustom{"Is User Logged In?"}
+              AuthCustom -- "No" --> LoginCustom["Redirect to /account?redirect=/shop"]
+              LoginCustom --> CompleteAuthCustom["User logs in or signs up"]
+              CompleteAuthCustom --> DispatchCustomCart["Add Custom Box items to cart & clear inputs"]
+              AuthCustom -- "Yes" --> DispatchCustomCart
+          end
+
+          subgraph ShopCatalog ["4. Traditional Catalog Shopping"]
+              BrowseCatalog --> ViewProduct["Click Product Card -> View specific features & reviews"]
+              ViewProduct --> CatalogActions{"User Action"}
+              CatalogActions -- "Add to Wishlist" --> WishlistToggle["Save item to LocalStorage wishlist"]
+              CatalogActions -- "Add Single Pack" --> DispatchSingleCart["Add 10-pack item to cart"]
+          end
+
+          DispatchQuizCart & DispatchCustomCart & DispatchSingleCart & WishlistToggle --> CartHome["Navigate to /cart"]
+
+          subgraph CartModule ["5. Shopping Cart Management"]
+              CartHome --> RenderCart["Load cart state from AppContext"]
+              RenderCart --> CartCheck{"Is Cart Empty?"}
+              CartCheck -- "Yes" --> ShopLink["Show empty cart message -> Link to /shop"]
+              CartCheck -- "No" --> EditCart["Modify quantities or remove cart items"]
+              EditCart & ShopLink --> CartActions{"User Action"}
+              CartActions -- "Keep Shopping" --> BrowseCatalog
+              CartActions -- "Proceed to Checkout" --> RouteCheckout["Navigate to /checkout"]
+          end
+
+          subgraph CheckoutAuth ["6. Auth & Checkout Gateways"]
+              RouteCheckout --> LoadCheckout["Load Shipping & Billing Address Form"]
+              LoadCheckout --> EnterDetails["Enter Recipient Name, Phone, and Address"]
+              EnterDetails --> PlaceOrder["Click Place Order"]
+          end
+
+          PlaceOrder --> PostOrder["Send order payload to /api/checkout/create-order"]
+
+          subgraph PaymentOrder ["7. Payment & Order Completion"]
+              PostOrder --> OrderCreated["Database saves order status as Pending"]
+              OrderCreated --> CheckGateway{"Are payment keys configured?"}
+              CheckGateway -- "Yes (Razorpay)" --> RazorpayPop["Open Razorpay payment popup"]
+              RazorpayPop --> RazorpayVerify["POST transaction receipt to /api/checkout/verify-payment"]
+              CheckGateway -- "No (Local/Offline)" --> MockPop["Open interactive Mock Payment Simulator overlay"]
+              MockPop --> MockVerify["POST simulator data to /api/checkout/mock-confirm"]
+              
+              RazorpayVerify & MockVerify --> PaymentResult{"Payment Authorized?"}
+              PaymentResult -- "Yes" --> SetPaid["Order Status set to Paid & clear cart state"]
+              PaymentResult -- "No" --> SetFailed["Retain cart items & display error dialog"]
+          end
+
+          SetPaid --> SuccessPage["Redirect to Order Success Confirmation page"]
+          SetFailed --> LoadCheckout
+
+          subgraph PostPurchase ["8. Profile & Order Tracking"]
+              SuccessPage --> OpenProfile["Navigate to /account Profile Dashboard"]
+              OpenProfile --> ViewOrders["Fetch orders from /api/orders/my-orders"]
+              ViewOrders --> TrackShipment["View fulfillment status: Pending -> Processing -> Shipped -> Delivered"]
+              TrackShipment --> End(["User logs out or shops again"])
+          end
+
+          %% Styling definitions at the bottom
+          style Start fill:#d0385c,stroke:#7e0022,stroke-width:2px,color:#fff
+          style End fill:#d0385c,stroke:#7e0022,stroke-width:2px,color:#fff
+          
+          style SelectPath fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+          style QuizActions fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+          style AuthQuiz fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+          style MinCheck fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+          style DiscountCheck fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+          style CustomActions fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+          style AuthCustom fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+          style CatalogActions fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+          style CartCheck fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+          style CartActions fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+          style CheckGateway fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+          style PaymentResult fill:#febac4,stroke:#7e0022,stroke-width:2px,color:#d0385c
+    </pre>
+  </div>
+
+</body>
+</html>

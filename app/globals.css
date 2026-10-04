@@ -1,26 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+@theme {
+  /* OLIPOP Color Palette */
+  --color-forest-ink: #d0385c;
+  --color-cream-paper: #fdf7e7;
+  --color-mint-sage: #fae3e5;
+  --color-charcoal: #3a3a3a;
+  --color-pure-white: #ffffff;
+  --color-hairline-gray: #e3e3e3;
+  --color-wine-press: #7e0022;
+  --color-bright-teal: #febac4;
+  --color-fountain-teal: #008b70;
+  --color-cardinal-red: #d32737;
+
+  /* Flavor Pastel Color Palette */
+  --color-banana-cream: #fdf4b5;
+  --color-watermelon-lime: #a9df71;
+  --color-crisp-apple: #febac4;
+  --color-classic-grape: #e3d2ed;
+  --color-vintage-cola: #f8d5c0;
+
+  /* Standard theme mapping for backward compatibility */
+  --color-background-primary: var(--bg-primary);
+  --color-background-secondary: var(--bg-secondary);
+  --color-accent: var(--accent);
+  --color-primaryText: var(--text-primary);
+
+  --font-sans: var(--font-sans), sans-serif;
+  --font-serif: var(--font-playfair), serif;
+  --font-handwritten: 'Caveat', cursive;
+
+  /* Radii */
+  --radius-tags: 50px;
+  --radius-cards: 16px;
+  --radius-inputs: 50px;
+  --radius-buttons: 50px;
+  --radius-hero-panels: 24px;
+  --radius-2xl: 24px;
+
+  /* Elevation */
+  --shadow-lg: rgba(0, 0, 0, 0.1) 0px 0px 24px 0px;
+
+  --animate-bounce-slow: bounceSlow 4s ease-in-out infinite;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-primary: #fdf7e7; /* Cream Paper */
+  --bg-secondary: #fae3e5; /* Soft Rose Blossom */
+  --accent: #7e0022; /* Wine Press / Deep Rose Accent */
+  --text-primary: #3a3a3a; /* Charcoal */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --bg-primary: #2a0410; /* Very Deep Burgundy */
+  --bg-secondary: #4a0a1f; /* Slightly lighter burgundy */
+  --accent: #fdf7e7; /* Cream Paper Accent */
+  --text-primary: #fdf7e7; /* Cream Paper Text */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Primary CTA Button (Neutral & Deep Wine Rose treatments) */
+.btn-premium-gradient {
+  background-color: #7e0022; /* Deep Wine Rose Accent */
+  color: #ffffff; /* Pure White */
+  border-radius: 50px;
+  padding: 12px 24px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 24px 0px; /* Soft ambient glow */
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+}
+
+.btn-premium-gradient:hover {
+  background-color: #5c0018; /* Deepened Wine */
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 28px 4px;
+  transform: translateY(-1px);
+}
+
+.btn-premium-gradient:active {
+  transform: translateY(0);
+}
+
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Headings: WindsorEF substitute (Playfair Display) weight 800, tight line-height */
+.heading-premium {
+  font-family: var(--font-playfair), serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+}
+
+/* Utility labels: Clean sans-serif, uppercase, spaced out */
+.utility-label {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Premium Transitions: cubic-bezier(0.16, 1, 0.3, 1) at 1s duration */
+.transition-premium {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 1000ms;
+}
+
+/* Grayscale hover styling for images/illustrations */
+.img-premium {
+  filter: grayscale(15%);
+  transform: scale(1);
+  transition: filter 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.img-premium:hover {
+  filter: grayscale(0%);
+  transform: scale(1.04);
+}
+
+/* Scroll reveal styles */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom expanding underline for premium links */
+.nav-link-hover {
+  position: relative;
+}
+.nav-link-hover::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--accent);
+  transform-origin: bottom center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-link-hover:hover::after {
+  transform: scaleX(1);
+}
+.dark .bg-background-secondary {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+@keyframes floatAnimation {
+  0%, 100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.4; }
+  50% { transform: translateY(-12px) scale(1.15) rotate(15deg); opacity: 0.8; }
+}
+
+.animate-float {
+  animation: floatAnimation 4s ease-in-out infinite;
+}
+
+@keyframes floatProduct {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-product-float {
+  animation: floatProduct 6s ease-in-out infinite;
+}
+
+/* Custom styling for HTML5 Date Input Picker to cover the entire container */
+input[type="date"] {
+  position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  color: transparent;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* From Uiverse.io by ozgeozkaraa01 - Adjusted to COMFI Theme */
+.pwd-group {
+  display: flex;
+  line-height: 30px;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.pwd-input {
+  width: 100%;
+  height: 45px;
+  line-height: 30px;
+  padding: 0 1rem;
+  padding-left: 3rem;
+  border: 1px solid rgba(208, 56, 92, 0.15); /* #d0385c/15 */
+  border-radius: 9999px; /* full rounded to match other inputs */
+  outline: none;
+  background-color: #fdf7e7; /* Comfi cream */
+  color: #3a3a3a;
+  transition: .5s ease;
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+.pwd-input::placeholder {
+  color: #a3a3a3;
+}
+
+.pwd-input:focus, .pwd-input:hover {
+  outline: none;
+  border-color: #d0385c;
+  background-color: #fdf7e7;
+  box-shadow: 0 0 0 4px rgba(208, 56, 92, 0.2);
+}
+
+.pwd-icon {
+  position: absolute;
+  left: 1rem;
+  fill: none;
+  width: 1rem;
+  height: 1rem;
+  color: rgba(208, 56, 92, 0.35); /* #d0385c/35 */
 }

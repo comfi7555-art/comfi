@@ -1,0 +1,185 @@
+{
+  "products": [
+    {
+      "id": "prod_regular_10",
+      "name": "Comfi Ultra Thin - Regular",
+      "size": "Regular",
+      "length": "240mm",
+      "packCount": 10,
+      "price": 199,
+      "stock": 120,
+      "description": "Ultra-thin regular pads with wide wings designed for active daytime comfort. Features an irritation-free cotton feel, quick absorption lock layer, and leak-proof barriers.",
+      "features": [
+        "Breathable top layer for zero irritation",
+        "Wide wings for secure fit",
+        "Individually wrapped in paper for hygienic disposal",
+        "Dry-lock core prevents daytime leaks"
+      ],
+      "reviews": [
+        {
+          "user": "Sarah M.",
+          "rating": 5,
+          "comment": "Incredibly thin and comfortable. Forgot I was even wearing it!",
+          "date": "2026-06-15"
+        },
+        {
+          "user": "Aisha K.",
+          "rating": 4,
+          "comment": "Great for regular days, rash-free indeed.",
+          "date": "2026-06-10"
+        }
+      ]
+    },
+    {
+      "id": "prod_large_10",
+      "name": "Comfi Ultra Thin - Large",
+      "size": "Large",
+      "length": "280mm",
+      "packCount": 10,
+      "price": 249,
+      "stock": 85,
+      "description": "Premium large ultra-thin pads offering high absorbency for medium to heavy flow days. Skin-friendly, extra flexible, and features advanced rash-protection technology.",
+      "features": [
+        "Ultra-absorbent gel core",
+        "Hypoallergenic skin-safe top sheet",
+        "Wide-wing grip to prevent shifting",
+        "Super breathable back sheet"
+      ],
+      "reviews": [
+        {
+          "user": "Priya R.",
+          "rating": 5,
+          "comment": "Hands down the best pad I have used. Zero rashes, completely dry.",
+          "date": "2026-06-18"
+        }
+      ]
+    },
+    {
+      "id": "prod_xl_10",
+      "name": "Comfi Ultra Thin - XL",
+      "size": "XL",
+      "length": "320mm",
+      "packCount": 10,
+      "price": 299,
+      "stock": 60,
+      "description": "Extra-long pads optimized for heavy daytime or active protection. Maximized surface coverage with zero bulkiness, enabling free movement without leakage fears.",
+      "features": [
+        "320mm extra protection coverage",
+        "High fluid absorption limit",
+        "Contoured shape for active movement",
+        "Individually sealed for hygiene"
+      ],
+      "reviews": [
+        {
+          "user": "Meera S.",
+          "rating": 5,
+          "comment": "The length is perfect and it feels so light. Love the cottony texture.",
+          "date": "2026-06-20"
+        }
+      ]
+    },
+    {
+      "id": "prod_overnight_10",
+      "name": "Comfi Ultra Thin - Overnight",
+      "size": "Overnight",
+      "length": "360mm",
+      "packCount": 10,
+      "price": 349,
+      "stock": 45,
+      "description": "Specialized overnight pads with an extra-wide back to prevent leaks while sleeping. Delivers up to 12-hour protection, remaining completely breathable.",
+      "features": [
+        "360mm night safety length",
+        "Extra-wide back wing coverage",
+        "Up to 12-hour leak defense",
+        "Zero-bulk comfortable sleep design"
+      ],
+      "reviews": [
+        {
+          "user": "Tanya G.",
+          "rating": 5,
+          "comment": "I slept peacefully for the first time without worrying about stains. Super wide back!",
+          "date": "2026-06-19"
+        }
+      ]
+    },
+    {
+      "id": "prod_hcptf8ax2",
+      "reviews": [],
+      "features": [],
+      "name": "Comfi Ultra - Next Test Size",
+      "size": "Large",
+      "length": "280mm",
+      "packCount": 10,
+      "price": 219,
+      "stock": 50,
+      "description": ""
+    },
+    {
+      "id": "prod_wnop10e5a",
+      "reviews": [],
+      "features": [],
+      "name": "Comfi Ultra - Next Test Size",
+      "size": "Large",
+      "length": "280mm",
+      "packCount": 10,
+      "price": 219,
+      "stock": 50,
+      "description": ""
+    }
+  ],
+  "users": [
+    {
+      "id": "user_cnqiho8ca",
+      "role": "admin",
+      "email": "admin@comfi.com",
+      "password": "$2b$10$tJzcfHH4Boe5JynkdlraK.ulU33JB/RZDH6/EQHJHmXorcmuhsjk2",
+      "name": "Comfi Admin"
+    },
+    {
+      "id": "user_gxsf5s4or",
+      "role": "customer",
+      "name": "Next Customer",
+      "email": "customer_next_1782068220927@test.com",
+      "password": "$2b$10$9Ek3RcMDvkgPVA4bXGPNRe01Gf29n/y2zFO3horw8aTODE8ZwwaZy"
+    },
+    {
+      "id": "user_f8ep9p9rb",
+      "role": "customer",
+      "name": "Next Customer",
+      "email": "customer_next_1782068264505@test.com",
+      "password": "$2b$10$yAtM9E3LRyJ7r.NG4YN9nuSN93Af6nRCSXxR3OTvDRzBFTplMpQZ6"
+    },
+    {
+      "id": "user_98kwy2rvt",
+      "role": "admin",
+      "name": "Carol Pillai",
+      "email": "carolpillai02@gmail.com",
+      "password": "$2b$10$PLFy2Hsbd.wmyZB99YPv.ePovsyY69scGTsxMiXVhqN6VdbywHh1C"
+    },
+    {
+      "id": "user_novox0u49",
+      "role": "customer",
+      "name": "Valued Customer",
+      "email": "comfi7555@gmail.com",
+      "dob": "",
+      "phone": ""
+    }
+  ],
+  "orders": [],
+  "otps": [
+    {
+      "id": "otp_yat1696kf",
+      "created_at": "2026-08-13T08:08:58.772Z",
+      "email": "test@example.com",
+      "code": "373630",
+      "expiresAt": "2026-08-13T08:13:58.772Z"
+    },
+    {
+      "id": "otp_gedifyvjh",
+      "created_at": "2026-08-13T08:10:05.337Z",
+      "email": "carolpillai02@gmail.com",
+      "code": "913180",
+      "expiresAt": "2026-08-13T08:15:05.337Z"
+    }
+  ]
+}
