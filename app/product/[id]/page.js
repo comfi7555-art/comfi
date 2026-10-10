@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect, useRef, use } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useApp } from '../../context/AppContext';
 import ScrollReveal from '../../components/ScrollReveal';
 import FloatingBadge from '../../components/FloatingBadge';
 import { PadIllustration } from '../../components/ProductCard';
-import { Star, ShieldCheck, Heart, Leaf, HelpCircle, ShoppingCart } from 'lucide-react';
+import { Star, ShieldCheck, Heart, Leaf, HelpCircle, ShoppingCart, Check } from 'lucide-react';
 import HeartToggle from '../../components/HeartToggle';
 
 const FALLBACK_PRODUCTS = [
@@ -97,10 +97,14 @@ export default function ProductDetail({ params }) {
 
   const router = useRouter();
   const pathname = usePathname();
-  const { API_URL, addToCart, token, toggleWishlist, isInWishlist, user } = useApp();
+  const { API_URL, addToCart, token, toggleWishlist, isInWishlist, user, showToast } = useApp();
   const [product, setProduct] = useState(null);
   const [packOption, setPackOption] = useState(10);
   const [loading, setLoading] = useState(true);
+
+  // 30-Second Dynamic Added to Cart State
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const addedTimerRef = useRef(null);
 
   // Review states
   const [reviewRating, setReviewRating] = useState(5);
@@ -157,8 +161,17 @@ export default function ProductDetail({ params }) {
 
   const handleAddToCart = () => {
     if (!user) {
-      alert("Please log in or sign up to add items to your cart.");
+      if (showToast) {
+        showToast("Please log in or sign up to add items to your cart.", "Login Required");
+      } else {
+        alert("Please log in or sign up to add items to your cart.");
+      }
       router.push(`/account?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
+
+    if (isAddedToCart) {
+      router.push('/cart');
       return;
     }
 
@@ -169,7 +182,17 @@ export default function ProductDetail({ params }) {
       price: currentPrice
     };
     addToCart(finalProduct, 1);
-    alert(`${finalProduct.name} has been added to the cart!`);
+    
+    if (showToast) {
+      showToast(`${finalProduct.name} added to your bag!`, "🎉 Added to Bag!");
+    }
+
+    setIsAddedToCart(true);
+
+    if (addedTimerRef.current) clearTimeout(addedTimerRef.current);
+    addedTimerRef.current = setTimeout(() => {
+      setIsAddedToCart(false);
+    }, 30000);
   };
 
   const handleAddReview = async (e) => {
@@ -305,14 +328,25 @@ export default function ProductDetail({ params }) {
               <button
                 onClick={handleAddToCart}
                 disabled={product.stock <= 0}
-                className={`px-8 py-4 rounded-full font-black text-xs uppercase tracking-widest transition-premium duration-500 hover:scale-105 active:scale-95 shadow-md flex items-center gap-2 ${
-                  product.stock > 0
-                    ? 'bg-accent text-white' 
-                    : 'bg-primaryText/10 text-primaryText/40 cursor-not-allowed'
+                className={`px-8 py-4 rounded-full font-black text-xs uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-md flex items-center gap-2 cursor-pointer ${
+                  product.stock <= 0
+                    ? 'bg-primaryText/10 text-primaryText/40 cursor-not-allowed'
+                    : isAddedToCart
+                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                    : 'bg-[#d0385c] hover:bg-[#5c0018] text-white'
                 }`}
               >
-                <ShoppingCart size={16} />
-                {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+                {product.stock <= 0 ? (
+                  "Out of Stock"
+                ) : isAddedToCart ? (
+                  <>
+                    <Check size={16} /> GO TO CART →
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart size={16} /> Add to Cart
+                  </>
+                )}
               </button>
             </div>
 

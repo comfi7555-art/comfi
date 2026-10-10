@@ -288,6 +288,16 @@ export function AppProvider({ children }) {
     return wishlist.includes(productId);
   };
 
+  // In-Website Toast Notification State
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, title = 'Added to Bag!') => {
+    setToast({ message, title });
+    setTimeout(() => {
+      setToast(null);
+    }, 4500);
+  };
+
   return (
     <AppContext.Provider value={{
       user,
@@ -315,9 +325,31 @@ export function AppProvider({ children }) {
       isInWishlist,
       isDarkMode,
       toggleTheme,
+      showToast,
       API_URL
     }}>
       {children}
+
+      {/* Floating Website Added-to-Cart Toast Card */}
+      {toast && (
+        <div className="fixed top-24 right-4 md:right-8 z-[999999] bg-[#fae3e5] border-2 border-[#d0385c]/40 text-[#7e0022] shadow-2xl rounded-2xl p-4 max-w-sm w-full flex items-center justify-between gap-3 font-sans animate-bounce-in">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-[#d0385c] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
+              ✓
+            </div>
+            <div>
+              <div className="text-xs font-black text-[#d0385c] uppercase tracking-wider">{toast.title}</div>
+              <div className="text-xs text-[#3a3a3a]/80 font-medium line-clamp-1">{toast.message}</div>
+            </div>
+          </div>
+          <a
+            href="/cart"
+            className="bg-[#d0385c] hover:bg-[#5c0018] text-white px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shrink-0 transition-all shadow-xs"
+          >
+            Go to Cart →
+          </a>
+        </div>
+      )}
     </AppContext.Provider>
   );
 }

@@ -5,13 +5,13 @@
  * a cardboard live preview drawer, and forest-teal button with white text.
  ************************************************************************/
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useApp } from '../context/AppContext';
-import { Plus, Minus, Sparkles } from 'lucide-react';
+import { Plus, Minus, Sparkles, Check } from 'lucide-react';
 
 export default function BuildYourOwnPack({ products }) {
-  const { addToCart, user } = useApp();
+  const { addToCart, user, showToast } = useApp();
   const router = useRouter();
   const pathname = usePathname();
   const [quantities, setQuantities] = useState({
@@ -20,6 +20,9 @@ export default function BuildYourOwnPack({ products }) {
     XL: 0,
     Overnight: 0
   });
+
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const addedTimerRef = useRef(null);
 
   const handleIncrement = (size) => {
     setQuantities(prev => ({
@@ -56,19 +59,32 @@ export default function BuildYourOwnPack({ products }) {
 
   const handleAddBundle = () => {
     if (!user) {
-      alert("Please log in or sign up to compile and purchase a custom pack.");
+      if (showToast) {
+        showToast("Please log in or sign up to compile a custom pack.", "Login Required");
+      } else {
+        alert("Please log in or sign up to compile and purchase a custom pack.");
+      }
       router.push(`/account?redirect=${encodeURIComponent(pathname)}`);
       return;
     }
 
     if (totalPads < 10) {
-      alert("Please select at least 10 pads to build a custom pack.");
+      if (showToast) {
+        showToast("Please select at least 10 pads to build a custom pack.", "Select Minimum 10 Pads");
+      } else {
+        alert("Please select at least 10 pads to build a custom pack.");
+      }
+      return;
+    }
+
+    if (isAddedToCart) {
+      router.push('/cart');
       return;
     }
 
     const bundleItem = {
       id: `custom_bundle_${Date.now()}`,
-      name: "Custom Comfi Bundle",
+      name: `Custom Flow Pack (${totalPads} Pads)`,
       size: "Custom Mix",
       packCount: totalPads,
       price: finalPrice,
@@ -82,13 +98,16 @@ export default function BuildYourOwnPack({ products }) {
 
     addToCart(bundleItem, 1, details);
     
-    setQuantities({
-      Regular: 0,
-      Large: 0,
-      XL: 0,
-      Overnight: 0
-    });
-    alert("Your custom bundle has been added to the cart!");
+    if (showToast) {
+      showToast(`Custom Flow Pack (${totalPads} Pads) added to your bag!`, "🎉 Custom Box Added!");
+    }
+
+    setIsAddedToCart(true);
+
+    if (addedTimerRef.current) clearTimeout(addedTimerRef.current);
+    addedTimerRef.current = setTimeout(() => {
+      setIsAddedToCart(false);
+    }, 30000);
   };
 
   return (
@@ -218,13 +237,21 @@ export default function BuildYourOwnPack({ products }) {
         <button
           onClick={handleAddBundle}
           disabled={totalPads < 10}
-          className={`px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg ${
-            totalPads >= 10 
-              ? 'bg-[#d0385c] text-white hover:bg-[#5c0018] cursor-pointer' 
-              : 'bg-[#d0385c]/10 text-[#d0385c]/30 cursor-not-allowed border border-[#d0385c]/10'
+          className={`px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2 cursor-pointer ${
+            totalPads < 10
+              ? 'bg-[#d0385c]/10 text-[#d0385c]/30 cursor-not-allowed border border-[#d0385c]/10'
+              : isAddedToCart
+              ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+              : 'bg-[#d0385c] hover:bg-[#5c0018] text-white'
           }`}
         >
-          Add Custom Bundle to Cart
+          {isAddedToCart ? (
+            <>
+              <Check size={16} /> GO TO CART →
+            </>
+          ) : (
+            "Add Custom Bundle to Cart"
+          )}
         </button>
       </div>
     </div>
