@@ -51,6 +51,15 @@ export default function Account() {
       if (redirect) {
         setRedirectPath(redirect);
       }
+
+      // Parse OAuth errors from query or hash
+      const hasErrorInQuery = searchParams.get('error') || searchParams.get('error_description');
+      const hasErrorInHash = window.location.hash.includes('error=');
+      if (hasErrorInQuery || hasErrorInHash) {
+        setAuthError('Google login session expired or failed code exchange. Please click "Continue with Google" again.');
+        // Clean up messy OAuth error parameters from address bar
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
     }
   }, []);
 
@@ -96,7 +105,10 @@ export default function Account() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/account` : ''
+          redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/account` : '',
+          queryParams: {
+            prompt: 'select_account'
+          }
         }
       });
 
