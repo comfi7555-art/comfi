@@ -20,23 +20,33 @@ if (keyId && keySecret && keyId !== 'YOUR_KEY_ID' && keySecret !== 'YOUR_KEY_SEC
 
 export async function POST(request) {
   try {
-    const user = await verifyAuth(request);
-    if (!user) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    }
+    let user = await verifyAuth(request);
 
     const { 
       amount, 
       subtotal, 
       discountAmount, 
+      deliveryCharge,
+      gstAmount,
       couponCode, 
       gstin, 
       gstinDetails, 
+      isMockPayment,
       items, 
       shippingAddress, 
       customerName, 
       customerEmail 
     } = await request.json();
+
+    // Guest checkout fallback if token missing or unauthenticated
+    if (!user) {
+      user = {
+        id: 'guest_' + Math.random().toString(36).substr(2, 9),
+        name: customerName || shippingAddress?.name || 'Guest Customer',
+        email: customerEmail || user?.email || 'customer@comfi.shop',
+        role: 'customer'
+      };
+    }
     
     if (!amount || !items || !shippingAddress) {
       return NextResponse.json({ message: 'Missing order parameters' }, { status: 400 });
@@ -44,8 +54,38 @@ export async function POST(request) {
 
     const internalOrderId = 'ord_' + Math.random().toString(36).substr(2, 9);
 
-    if (razorpayInstance) {
-      // 1. Razorpay Mode
+    // If Mock Payment Mode selected OR Razorpay instance unavailable:
+    if (isMockPayment || !razorpayInstance) {
+      const order = await db.orders.create({
+        userId: user.id,
+        customerName: customerName || user.name,
+        customerEmail: customerEmail || user.email,
+        items,
+        totalAmount: amount,
+        subtotal: subtotal || amount,
+        discountAmount: discountAmount || 0,
+        deliveryCharge: deliveryCharge || 0,
+        gstAmount: gstAmount || 0,
+        couponCode: couponCode || null,
+        gstin: gstin || null,
+        gstinDetails: gstinDetails || null,
+        shippingAddress,
+        paymentStatus: 'Pending',
+        orderStatus: 'Processing',
+        razorpayOrderId: `mock_rzp_${Math.random().toString(36).substr(2, 9)}`
+      });
+
+      return NextResponse.json({
+        success: true,
+        isMockPayment: true,
+        orderId: order.razorpayOrderId,
+        amount: amount,
+        currency: "INR",
+        dbOrderId: order.id
+      });
+
+    } else {
+      // Razorpay Live Mode
       const options = {
         amount: Math.round(amount * 100), // in paise
         currency: "INR",
@@ -62,6 +102,8 @@ export async function POST(request) {
         totalAmount: amount,
         subtotal: subtotal || amount,
         discountAmount: discountAmount || 0,
+        deliveryCharge: deliveryCharge || 0,
+        gstAmount: gstAmount || 0,
         couponCode: couponCode || null,
         gstin: gstin || null,
         gstinDetails: gstinDetails || null,
@@ -80,37 +122,9 @@ export async function POST(request) {
         currency: "INR",
         dbOrderId: order.id
       });
-
-    } else {
-      // 2. Mock Mode
-      const order = await db.orders.create({
-        userId: user.id,
-        customerName: customerName || user.name,
-        customerEmail: customerEmail || user.email,
-        items,
-        totalAmount: amount,
-        subtotal: subtotal || amount,
-        discountAmount: discountAmount || 0,
-        couponCode: couponCode || null,
-        gstin: gstin || null,
-        gstinDetails: gstinDetails || null,
-        shippingAddress,
-        paymentStatus: 'Pending',
-        orderStatus: 'Processing',
-        razorpayOrderId: `mock_rzp_${Math.random().toString(36).substr(2, 9)}`
-      });
-
-      return NextResponse.json({
-        success: true,
-        isMockPayment: true,
-        orderId: order.razorpayOrderId,
-        amount: amount,
-        currency: "INR",
-        dbOrderId: order.id
-      });
     }
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ message: 'Error initiating order creation' }, { status: 500 });
+    console.error("Order creation error:", err);
+    return NextResponse.json({ message: err.message || 'Error initiating order creation' }, { status: 500 });
   }
 }

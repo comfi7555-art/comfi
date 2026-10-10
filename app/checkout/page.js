@@ -185,7 +185,8 @@ export default function Checkout() {
       });
 
       if (!res.ok) {
-        throw new Error('Failed to create order on server');
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.message || 'Failed to initiate order creation on server');
       }
 
       const orderData = await res.json();
