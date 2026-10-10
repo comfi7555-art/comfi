@@ -243,14 +243,9 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-[#f8f6f0] text-gray-800 flex flex-col font-sans">
       {/* Top Header Bar */}
       <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-30 shadow-xs">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-full bg-[#7e0022] text-white flex items-center justify-center font-serif font-bold text-sm">C</span>
-            <span className="font-serif font-bold text-xl text-[#7e0022] tracking-tight">Comfi Admin Control</span>
-          </div>
-          <span className="text-xs bg-[#febac4]/30 text-[#7e0022] font-semibold px-2.5 py-1 rounded-full border border-[#d0385c]/20">
-            Enterprise v2.4
-          </span>
+        <div className="flex items-center gap-2">
+          <span className="w-8 h-8 rounded-full bg-[#7e0022] text-white flex items-center justify-center font-serif font-bold text-sm">C</span>
+          <span className="font-serif font-bold text-xl text-[#7e0022] tracking-tight">Comfi Admin Control</span>
         </div>
 
         {/* Search Bar & Actions */}
