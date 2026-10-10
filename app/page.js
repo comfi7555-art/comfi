@@ -11,7 +11,7 @@ import { useApp } from './context/AppContext';
 import ScrollReveal from './components/ScrollReveal';
 import ProductCard from './components/ProductCard';
 import FAQ from './components/FAQ';
-import { ArrowRight, ShieldCheck, Heart, Wind, Star, Sparkles } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Heart, Wind, Star, Sparkles, CheckCircle2, SlidersHorizontal } from 'lucide-react';
 
 const FALLBACK_PRODUCTS = [
   { id: "prod_regular_10", name: "Comfi Ultra Thin - Regular", size: "Regular", length: "240mm", packCount: 10, price: 199, description: "Ultra-thin regular pads with wide wings designed for active daytime comfort.", reviews: [] },
@@ -293,42 +293,40 @@ export default function Home() {
         </ScrollReveal>
       </section>
  
-      {/* Rewards Feature Section - 2 Column Layout with Circular Image Crop */}
-      <section className="bg-transparent py-24 px-6 md:px-12 border-t border-[#e3e3e3]">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-20">
-          {/* Left Column: Perfectly Round Crop mask for illustration */}
+      {/* Fit Finder Section */}
+      <section className="bg-transparent py-20 px-6 md:px-12 border-t border-[#e3e3e3]">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-16">
+          {/* Left Column: Premium Organic Cotton Pad Image */}
           <ScrollReveal className="w-full md:w-1/2 flex justify-center">
-            <div className="w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-[#febac4] border border-[#d0385c]/5 flex items-center justify-center p-6 shadow-2xs relative overflow-hidden">
-              <div className="absolute inset-0 opacity-10 flex flex-wrap gap-4 p-8 pointer-events-none">
-                {Array.from({ length: 24 }).map((_, i) => (
-                  <div key={i} className="w-2.5 h-2.5 rounded-full bg-[#7e0022]"></div>
-                ))}
-              </div>
-              
-              {/* Retro floating icons representing period profile / sparkle */}
-              <div className="bg-white p-8 rounded-full aspect-square w-3/4 flex items-center justify-center shadow-xs border border-[#d0385c]/10 animate-product-float">
-                <Sparkles size={72} className="text-[#7e0022] stroke-[1.5]" />
+            <div className="w-72 h-72 sm:w-96 sm:h-96 rounded-full p-2 bg-gradient-to-tr from-[#febac4] via-white to-[#fde8eb] border border-[#d0385c]/15 shadow-xl relative group">
+              <div className="w-full h-full rounded-full overflow-hidden relative shadow-inner">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src="/images/cotton_pad_hero.jpg" 
+                  alt="Comfi Organic Cotton Pad" 
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
               </div>
             </div>
           </ScrollReveal>
 
-          {/* Right Column: Wine-red accent label, display heading, bright-teal CTA button */}
+          {/* Right Column: Warm, human text & high contrast CTA */}
           <div className="w-full md:w-1/2 flex flex-col items-start text-left">
             <ScrollReveal>
               <span className="text-xs font-bold tracking-[0.2em] text-[#7e0022] uppercase mb-3 block">
-                CHERRY ON TOP
+                TAILORED FOR YOUR BODY
               </span>
               <h2 className="text-3xl sm:text-5xl font-serif font-black tracking-tighter text-[#d0385c] mb-4">
                 Find Your Perfect Fit in 60 Seconds
               </h2>
               <p className="text-base font-light text-[#3a3a3a] mb-8 leading-relaxed">
-                Answer 4 simple questions about your flow pattern, skin sensitivity, and activity levels. Get an automated recommendation customized for your body.
+                No two bodies or periods are the same. Answer a few quick questions about your flow, daily routine, and comfort preferences, and we&apos;ll match you with your ideal pad combo.
               </p>
               <Link 
                 href="/quiz" 
-                className="bg-[#febac4] text-[#d0385c] px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest inline-flex items-center gap-2 hover:bg-[#e29fa7] active:scale-95 transition-all shadow-md"
+                className="bg-[#d0385c] hover:bg-[#b02b4a] text-white px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest inline-flex items-center gap-2 active:scale-95 transition-all shadow-md group"
               >
-                Start Size Quiz <ArrowRight size={14} />
+                Find My Perfect Fit <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </ScrollReveal>
           </div>

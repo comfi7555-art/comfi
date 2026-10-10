@@ -17,8 +17,8 @@ export default function Navbar() {
   const wishlistCount = wishlist?.length || 0;
   const pathname = usePathname();
 
-  // Hide nav entirely in admin dashboard page to prevent visual leak
-  if (pathname.startsWith('/admin/dashboard')) {
+  // Hide nav entirely in all admin pages to prevent top gap & visual leaks
+  if (pathname.startsWith('/admin')) {
     return null;
   }
 
@@ -73,9 +73,14 @@ export default function Navbar() {
               <p className="text-sm font-bold text-[#d0385c] truncate">Hi, {user.name?.split(' ')[0]}</p>
             </div>
             <Link href="/account" className="px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#3a3a3a] hover:bg-[#d0385c]/5 hover:text-[#d0385c] rounded-xl transition-colors">
-              Dashboard
+              My Account
             </Link>
-            <button onClick={logout} className="px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#3a3a3a] hover:bg-[#d0385c]/5 hover:text-[#d0385c] rounded-xl transition-colors text-left w-full cursor-pointer">
+            {(user.role === 'admin' || user.email === 'comfi7555@gmail.com' || user.email === 'carolpillai02@gmail.com') && (
+              <Link href="/admin/dashboard" className="px-4 py-2 text-xs font-bold uppercase tracking-widest text-amber-900 bg-amber-100 hover:bg-amber-200 rounded-xl transition-colors flex items-center gap-1.5 my-1">
+                👑 Admin Panel
+              </Link>
+            )}
+            <button onClick={logout} className="px-4 py-2 text-xs font-bold uppercase tracking-widest text-red-600 hover:bg-red-50 rounded-xl transition-colors text-left w-full cursor-pointer">
               Sign Out
             </button>
           </div>

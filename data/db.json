@@ -158,11 +158,23 @@
     },
     {
       "id": "user_novox0u49",
-      "role": "customer",
+      "role": "admin",
       "name": "Valued Customer",
       "email": "comfi7555@gmail.com",
       "dob": "",
       "phone": ""
+    },
+    {
+      "id": "user_6h05ixt87",
+      "role": "admin",
+      "name": "Carol Pillai",
+      "email": "pillaicarolcs242549@gmail.com",
+      "passwordHash": "4cfb5abb3a973bf64a0e900f83cc60afdecca4466dae08807a3b284eaf35e92d",
+      "dob": "2006-02-17",
+      "phone": "+918779831384",
+      "avatarUrl": null,
+      "isTwoFactorEnabled": false,
+      "twoFactorSecret": null
     }
   ],
   "orders": [],

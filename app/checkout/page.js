@@ -12,7 +12,18 @@ import ScrollReveal from '../components/ScrollReveal';
 import { CreditCard, CheckCircle, XCircle, ArrowLeft, Loader2 } from 'lucide-react';
 
 export default function Checkout() {
-  const { cart, getCartTotal, token, user, clearCart, API_URL } = useApp();
+  const { 
+    cart, 
+    getCartSubtotal, 
+    getCartDiscount, 
+    getCartTotal, 
+    coupon, 
+    gstinData, 
+    token, 
+    user, 
+    clearCart, 
+    API_URL 
+  } = useApp();
   const router = useRouter();
 
   const [shippingForm, setShippingForm] = useState({
@@ -76,6 +87,11 @@ export default function Checkout() {
         },
         body: JSON.stringify({
           amount: getCartTotal(),
+          subtotal: getCartSubtotal(),
+          discountAmount: getCartDiscount(),
+          couponCode: coupon?.code || null,
+          gstin: gstinData?.gstin || null,
+          gstinDetails: gstinData || null,
           items: cart.map(item => ({
             id: item.id,
             name: item.name,
@@ -309,12 +325,12 @@ export default function Checkout() {
         </form>
 
         {/* Order Basket Sidebar - Right */}
-        <div className="bg-[#fae3e5] rounded-3xl p-6 border border-[#d0385c]/15 shadow-2xs">
-          <h3 className="text-[10px] font-bold tracking-[0.2em] text-[#d0385c]/50 mb-4 uppercase">Bag Contents</h3>
+        <div className="bg-[#fae3e5] rounded-3xl p-6 border border-[#d0385c]/15 shadow-2xs flex flex-col gap-4">
+          <h3 className="text-[10px] font-bold tracking-[0.2em] text-[#d0385c]/70 uppercase">Bag Contents</h3>
           
-          <div className="flex flex-col gap-4 max-h-[300px] overflow-y-auto mb-6 pr-2">
+          <div className="flex flex-col gap-4 max-h-[250px] overflow-y-auto border-b border-[#d0385c]/10 pb-4 pr-2">
             {cart.map(item => (
-              <div key={item.cartItemId} className="flex justify-between items-start text-xs border-b border-[#d0385c]/10 pb-3">
+              <div key={item.cartItemId} className="flex justify-between items-start text-xs border-b border-[#d0385c]/5 pb-2">
                 <div>
                   <span className="font-bold text-[#d0385c] block font-sans">{item.name}</span>
                   <span className="text-[#3a3a3a]/70 font-sans">{item.size} • Qty: {item.quantity}</span>
@@ -324,7 +340,26 @@ export default function Checkout() {
             ))}
           </div>
 
-          <div className="flex justify-between items-baseline font-serif font-black text-lg text-[#d0385c] pt-2">
+          <div className="flex justify-between items-center text-xs text-[#3a3a3a]/80 font-sans">
+            <span>Subtotal</span>
+            <span className="font-bold text-[#d0385c]">₹{getCartSubtotal()}</span>
+          </div>
+
+          {coupon && (
+            <div className="flex justify-between items-center text-xs text-emerald-700 font-sans bg-[#fdf7e7] p-2.5 rounded-xl border border-emerald-500/20">
+              <span className="font-bold">🎉 Coupon ({coupon.code})</span>
+              <span className="font-bold">-₹{getCartDiscount()}</span>
+            </div>
+          )}
+
+          {gstinData && (
+            <div className="bg-[#fdf7e7] p-2.5 rounded-xl border border-emerald-500/20 text-xs">
+              <span className="font-bold text-emerald-800 block">✓ B2B GSTIN: {gstinData.gstin}</span>
+              <span className="text-[10px] text-emerald-700 block font-medium">{gstinData.tradeName || gstinData.legalName}</span>
+            </div>
+          )}
+
+          <div className="flex justify-between items-baseline font-serif font-black text-xl text-[#d0385c] pt-2 border-t border-[#d0385c]/10">
             <span>Total Payable</span>
             <span>₹{getCartTotal()}</span>
           </div>

@@ -93,6 +93,16 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  ::selection {
+    background-color: #febac4 !important;
+    color: #7e0022 !important;
+  }
+
+  ::-moz-selection {
+    background-color: #febac4 !important;
+    color: #7e0022 !important;
+  }
 }
 
 /* Headings: WindsorEF substitute (Playfair Display) weight 800, tight line-height */

@@ -9,16 +9,29 @@ export async function GET(request) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const profile = await db.users.findById(user.id);
+    let profile = await db.users.findById(user.id);
+    const ADMIN_EMAILS = ['comfi7555@gmail.com', 'carolpillai02@gmail.com', 'pillaicarolcs242549@gmail.com', 'admin@comfi.com'];
+    const isAdminEmail = user.email && ADMIN_EMAILS.includes(user.email.toLowerCase());
+    const effectiveRole = isAdminEmail ? 'admin' : (profile?.role || user.role || 'customer');
+
     if (!profile) {
-      return NextResponse.json({ message: 'User not found' }, { status: 404 });
+      profile = {
+        id: user.id,
+        name: user.name || 'Carol Pillai (Admin)',
+        email: user.email,
+        role: effectiveRole,
+        dob: '',
+        phone: '',
+        avatarUrl: null,
+        isTwoFactorEnabled: false
+      };
     }
 
     return NextResponse.json({
       id: profile.id,
-      name: profile.name,
-      email: profile.email,
-      role: profile.role,
+      name: profile.name || user.name || 'Carol Pillai (Admin)',
+      email: profile.email || user.email,
+      role: effectiveRole,
       dob: profile.dob || '',
       phone: profile.phone || '',
       avatarUrl: profile.avatarUrl || null,

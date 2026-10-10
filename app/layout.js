@@ -21,15 +21,17 @@ export const metadata = {
   description: "Gynecologist-approved, organic cotton sanitary pads engineered without bulkiness. Zero leaks. Zero irritation. Ultra-thin daytime and sleep protection.",
 };
 
+import MainLayout from "./components/MainLayout";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} h-full`}>
-      <body className="min-h-full flex flex-col bg-background-primary text-primaryText selection:bg-accent selection:text-primaryText">
+      <body className="min-h-full flex flex-col bg-background-primary text-primaryText selection:bg-[#febac4] selection:text-[#7e0022]">
         <AppProvider>
           <Navbar />
-          <main className="flex-grow pt-28">
+          <MainLayout>
             {children}
-          </main>
+          </MainLayout>
           <Footer />
         </AppProvider>
       </body>

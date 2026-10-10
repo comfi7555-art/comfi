@@ -11,8 +11,8 @@ export default function AdminLogin() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: 'comfi7555@gmail.com',
+    password: 'ComfiAdmin123!'
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);

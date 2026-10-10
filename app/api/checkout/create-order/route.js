@@ -25,7 +25,19 @@ export async function POST(request) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const { amount, items, shippingAddress, customerName, customerEmail } = await request.json();
+    const { 
+      amount, 
+      subtotal, 
+      discountAmount, 
+      couponCode, 
+      gstin, 
+      gstinDetails, 
+      items, 
+      shippingAddress, 
+      customerName, 
+      customerEmail 
+    } = await request.json();
+    
     if (!amount || !items || !shippingAddress) {
       return NextResponse.json({ message: 'Missing order parameters' }, { status: 400 });
     }
@@ -48,6 +60,11 @@ export async function POST(request) {
         customerEmail: customerEmail || user.email,
         items,
         totalAmount: amount,
+        subtotal: subtotal || amount,
+        discountAmount: discountAmount || 0,
+        couponCode: couponCode || null,
+        gstin: gstin || null,
+        gstinDetails: gstinDetails || null,
         shippingAddress,
         paymentStatus: 'Pending',
         orderStatus: 'Processing',
@@ -72,6 +89,11 @@ export async function POST(request) {
         customerEmail: customerEmail || user.email,
         items,
         totalAmount: amount,
+        subtotal: subtotal || amount,
+        discountAmount: discountAmount || 0,
+        couponCode: couponCode || null,
+        gstin: gstin || null,
+        gstinDetails: gstinDetails || null,
         shippingAddress,
         paymentStatus: 'Pending',
         orderStatus: 'Processing',

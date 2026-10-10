@@ -12,8 +12,8 @@ import { usePathname } from 'next/navigation';
 export default function Footer() {
   const pathname = usePathname();
 
-  // Hide footer on admin dashboard to keep dashboard clean
-  if (pathname.startsWith('/admin/dashboard')) {
+  // Hide footer on all admin pages to keep admin pages clean
+  if (pathname.startsWith('/admin')) {
     return null;
   }
 

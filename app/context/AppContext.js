@@ -86,9 +86,6 @@ export function AppProvider({ children }) {
         if (res.ok) {
           const userData = await res.json();
           setUser(userData);
-        } else {
-          // Token expired or invalid
-          logout();
         }
       } catch (err) {
         console.error("Error loading user profile", err);
@@ -182,13 +179,91 @@ export function AppProvider({ children }) {
     });
   };
 
+  // Coupon State
+  const [coupon, setCoupon] = useState(null);
+
+  // GSTIN State
+  const [gstinData, setGstinData] = useState(null);
+
   const clearCart = () => {
     setCart([]);
+    setCoupon(null);
+    setGstinData(null);
     localStorage.removeItem('comfi_cart');
   };
 
-  const getCartTotal = () => {
+  const getCartSubtotal = () => {
     return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  };
+
+  const getCartDiscount = () => {
+    if (!coupon) return 0;
+    const subtotal = getCartSubtotal();
+    if (coupon.discountType === 'percentage') {
+      return Math.round((subtotal * coupon.discountValue) / 100);
+    } else if (coupon.discountType === 'flat') {
+      return Math.min(coupon.discountValue, subtotal);
+    }
+    return 0;
+  };
+
+  const getCartTotal = () => {
+    const subtotal = getCartSubtotal();
+    const discount = getCartDiscount();
+    return Math.max(0, subtotal - discount);
+  };
+
+  const applyCoupon = async (code) => {
+    const subtotal = getCartSubtotal();
+    const res = await fetch(`${API_URL}/coupon/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, subtotal })
+    });
+    const data = await res.json();
+    if (data.success) {
+      setCoupon({
+        code: data.code,
+        discountType: data.discountType,
+        discountValue: data.discountValue,
+        discountAmount: data.discountAmount,
+        description: data.description
+      });
+      return { success: true, message: data.message };
+    } else {
+      return { success: false, message: data.message };
+    }
+  };
+
+  const removeCoupon = () => {
+    setCoupon(null);
+  };
+
+  const verifyAndApplyGSTIN = async (gstinNumber) => {
+    const res = await fetch(`${API_URL}/gstin/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ gstin: gstinNumber })
+    });
+    const data = await res.json();
+    if (data.success) {
+      setGstinData({
+        gstin: data.gstin,
+        legalName: data.legalName,
+        tradeName: data.tradeName,
+        state: data.state,
+        status: data.status,
+        taxpayerType: data.taxpayerType,
+        isVerified: true
+      });
+      return { success: true, message: data.message, data };
+    } else {
+      return { success: false, message: data.message };
+    }
+  };
+
+  const removeGSTIN = () => {
+    setGstinData(null);
   };
 
   const getCartCount = () => {
@@ -225,8 +300,16 @@ export function AppProvider({ children }) {
       removeFromCart,
       updateCartQuantity,
       clearCart,
+      getCartSubtotal,
+      getCartDiscount,
       getCartTotal,
       getCartCount,
+      coupon,
+      applyCoupon,
+      removeCoupon,
+      gstinData,
+      verifyAndApplyGSTIN,
+      removeGSTIN,
       wishlist,
       toggleWishlist,
       isInWishlist,
