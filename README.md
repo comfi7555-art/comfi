@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Comfi | Premium Ultra Thin Sanitary Pads
 
-## Getting Started
+> **Zero Leaks. Zero Irritation. Engineered for Unmatched Comfort.**
 
-First, run the development server:
+Comfi is a modern D2C feminine wellness e-commerce platform crafted with Next.js, Tailwind CSS, Supabase, and Razorpay. Designed with a warm apothecary aesthetic, interactive customized pad pack builders, and secure customer accounts.
+
+---
+
+## ✨ Features
+
+- **🌸 Custom Pack Builder**: Build your own custom mix of Regular (240mm), Large (280mm), and Overnight (360mm) pads.
+- **🛡️ Secure Customer Hub**: Complete account management with saved addresses, orders, and Google OAuth / Email authentication.
+- **⚡ Ultra-Fast Next.js App Router**: Optimized SEO metadata, OpenGraph cards, and fast page transitions.
+- **🎨 Luxury Aesthetic**: Bespoke typography with Playfair Display, soft blush palettes, and fluid GSAP micro-interactions.
+- **💳 Payments & Checkout**: Razorpay integration with automated order calculation and GST verification.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Install Dependencies
 
 ```bash
-npm run dev
+pnpm install
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure Environment Variables
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Create a `.env` file in the root directory:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
-## Learn More
+# Razorpay (Optional for testing)
+RAZORPAY_KEY_ID=your-key-id
+RAZORPAY_KEY_SECRET=your-key-secret
 
-To learn more about Next.js, take a look at the following resources:
+# JWT Secret
+JWT_SECRET=your-secret-key
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Run Development Server
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm dev
+# or
+npm run dev
+```
 
-## Deploy on Vercel
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16 (App Router) & React 19
+- **Styling**: Tailwind CSS
+- **Animations**: GSAP & Lucide Icons
+- **Database / Auth**: Supabase & Local DB Fallback
+- **Payments**: Razorpay
+
+---
+
+## 📄 License
+
+Proprietary © 2026 Comfi Care. All rights reserved.
