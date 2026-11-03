@@ -200,39 +200,11 @@ export default function ProductDetail({ params }) {
     : Math.round((product.price * 2) * 0.9);
 
   const handleAddToCart = () => {
-    if (!user) {
-      if (showToast) {
-        showToast("Please log in or sign up to add items to your cart.", "Login Required");
-      } else {
-        alert("Please log in or sign up to add items to your cart.");
-      }
-      router.push(`/account?redirect=${encodeURIComponent(pathname)}`);
-      return;
-    }
-
-    if (isAddedToCart) {
-      router.push('/cart');
-      return;
-    }
-
-    const finalProduct = {
-      ...product,
-      name: `${product.name} (${packOption} Pack)`,
-      packCount: packOption,
-      price: currentPrice
-    };
-    addToCart(finalProduct, 1);
-    
     if (showToast) {
-      showToast(`${finalProduct.name} added to your bag!`, "Added to Bag");
+      showToast("Orders are currently paused. All Comfi products are launching soon! Join our launch list to be notified.", "Orders Paused");
+    } else {
+      alert("Orders are currently paused. All Comfi products are launching soon! Join our launch list to be notified.");
     }
-
-    setIsAddedToCart(true);
-
-    if (addedTimerRef.current) clearTimeout(addedTimerRef.current);
-    addedTimerRef.current = setTimeout(() => {
-      setIsAddedToCart(false);
-    }, 30000);
   };
 
   const handleAddReview = async (e) => {
@@ -420,19 +392,15 @@ export default function ProductDetail({ params }) {
                   </button>
                 )}
 
-                {/* Pre-order Option for Testing & Advance Purchase */}
-                <button
-                  onClick={handleAddToCart}
-                  className="text-center text-[11px] font-bold text-[#d0385c]/80 hover:text-[#d0385c] underline py-1 transition-colors cursor-pointer flex items-center justify-center gap-1"
-                >
-                  {isAddedToCart ? (
-                    <>
-                      <Check size={13} className="text-[#d0385c]" /> Pre-order Bag Updated → View Cart
-                    </>
-                  ) : (
-                    "Or Pre-order (Add to Bag) →"
-                  )}
-                </button>
+                {/* Pre-launch Note */}
+                <div className="text-center pt-1.5">
+                  <span className="text-[11px] font-bold text-[#7e0022] uppercase tracking-wider block">
+                    Pre-orders & Orders Paused • Dropping Soon
+                  </span>
+                  <span className="text-[10px] text-[#3a3a3a]/65 block mt-0.5">
+                    Sign up above to be notified first when orders open.
+                  </span>
+                </div>
               </div>
             </div>
 

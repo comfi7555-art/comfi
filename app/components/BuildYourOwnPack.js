@@ -58,56 +58,20 @@ export default function BuildYourOwnPack({ products }) {
   const finalPrice = Math.round(rawPrice - discount);
 
   const handleAddBundle = () => {
-    if (!user) {
-      if (showToast) {
-        showToast("Please log in or sign up to compile a custom pack.", "Login Required");
-      } else {
-        alert("Please log in or sign up to compile and purchase a custom pack.");
-      }
-      router.push(`/account?redirect=${encodeURIComponent(pathname)}`);
-      return;
-    }
-
     if (totalPads < 10) {
       if (showToast) {
-        showToast("Please select at least 10 pads to build a custom pack.", "Select Minimum 10 Pads");
+        showToast("Please select at least 10 pads to preview a custom pack.", "Select Minimum 10 Pads");
       } else {
-        alert("Please select at least 10 pads to build a custom pack.");
+        alert("Please select at least 10 pads to preview a custom pack.");
       }
       return;
     }
 
-    if (isAddedToCart) {
-      router.push('/cart');
-      return;
-    }
-
-    const bundleItem = {
-      id: `custom_bundle_${Date.now()}`,
-      name: `Custom Flow Pack (${totalPads} Pads)`,
-      size: "Custom Mix",
-      packCount: totalPads,
-      price: finalPrice,
-      stock: 100
-    };
-
-    const details = Object.entries(quantities).reduce((acc, [size, qty]) => {
-      if (qty > 0) acc[size] = qty;
-      return acc;
-    }, {});
-
-    addToCart(bundleItem, 1, details);
-    
     if (showToast) {
-      showToast(`Custom Flow Pack (${totalPads} Pads) added to your bag!`, "Custom Box Added");
+      showToast(`Custom pack (${totalPads} pads) configured! Ordering will go live on official launch day.`, "Pack Preview Saved");
+    } else {
+      alert(`Custom pack (${totalPads} pads) configured! Ordering will go live on official launch day.`);
     }
-
-    setIsAddedToCart(true);
-
-    if (addedTimerRef.current) clearTimeout(addedTimerRef.current);
-    addedTimerRef.current = setTimeout(() => {
-      setIsAddedToCart(false);
-    }, 30000);
   };
 
   return (
@@ -245,21 +209,13 @@ export default function BuildYourOwnPack({ products }) {
         <button
           onClick={handleAddBundle}
           disabled={totalPads < 10}
-          className={`w-full sm:w-auto px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg flex items-center justify-center gap-2 cursor-pointer ${
+          className={`w-full sm:w-auto px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer ${
             totalPads < 10
               ? 'bg-[#d0385c]/10 text-[#d0385c]/30 cursor-not-allowed border border-[#d0385c]/10'
-              : isAddedToCart
-              ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-              : 'bg-[#d0385c] hover:bg-[#5c0018] text-white'
+              : 'bg-[#febac4] text-[#7e0022] hover:bg-[#ffd5dc] border border-[#7e0022]/20'
           }`}
         >
-          {isAddedToCart ? (
-            <>
-              <Check size={16} /> GO TO CART →
-            </>
-          ) : (
-            "Pre-order Custom Bundle"
-          )}
+          <Sparkles size={14} className="text-[#7e0022]" /> Custom Packs Launching Soon
         </button>
       </div>
     </div>

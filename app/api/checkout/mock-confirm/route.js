@@ -3,6 +3,13 @@ import { db } from '@/lib/db';
 import { verifyAuth } from '@/lib/auth';
 
 export async function POST(request) {
+  return NextResponse.json({
+    success: false,
+    message: "Orders are currently paused. All Comfi products are in pre-launch preview mode."
+  }, { status: 403 });
+}
+
+export async function DISABLED_POST(request) {
   try {
     const user = await verifyAuth(request);
     if (!user) {

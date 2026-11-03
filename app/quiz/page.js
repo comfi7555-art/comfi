@@ -310,13 +310,19 @@ export default function Quiz() {
               {result.desc}
             </p>
 
+            <div className="text-center mb-6">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#febac4] text-[#7e0022] border border-[#7e0022]/20 shadow-xs">
+                <Sparkles size={11} className="text-[#7e0022]" /> All Products Launching Soon • Orders Paused
+              </span>
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-              <button
-                onClick={handleAddToCart}
+              <Link
+                href="/shop"
                 className="bg-[#d0385c] text-white hover:bg-[#5c0018] px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                Add Recommended Box
-              </button>
+                Browse Recommended Sizes →
+              </Link>
               <button
                 onClick={handleReset}
                 className="bg-[#fdf7e7] text-[#d0385c] border border-[#d0385c]/15 px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-2xs hover:bg-[#d0385c]/10"

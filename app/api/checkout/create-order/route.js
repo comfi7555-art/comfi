@@ -19,6 +19,14 @@ if (keyId && keySecret && keyId !== 'YOUR_KEY_ID' && keySecret !== 'YOUR_KEY_SEC
 }
 
 export async function POST(request) {
+  // Pre-launch mode: All products are Coming Soon. Orders cannot be placed.
+  return NextResponse.json({
+    success: false,
+    message: "Orders are currently paused. All Comfi products are in pre-launch preview mode and will be available on official launch day."
+  }, { status: 403 });
+}
+
+export async function DISABLED_POST(request) {
   try {
     let user = await verifyAuth(request);
 

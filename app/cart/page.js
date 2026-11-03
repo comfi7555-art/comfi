@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useApp } from '../context/AppContext';
 import ScrollReveal from '../components/ScrollReveal';
-import { Trash2, Plus, Minus, ArrowRight, ShoppingCart, Tag, Check } from 'lucide-react';
+import { Trash2, Plus, Minus, ArrowRight, ShoppingCart, Tag, Check, Sparkles } from 'lucide-react';
 
 export default function Cart() {
   const { 
@@ -72,12 +72,7 @@ export default function Cart() {
   };
 
   const handleCheckoutRedirect = () => {
-    if (!user) {
-      alert("Please log in or sign up to complete your checkout.");
-      router.push('/account?redirect=/checkout');
-    } else {
-      router.push('/checkout');
-    }
+    alert("Orders cannot be placed at this time. All Comfi products are in pre-launch preview mode and will drop soon! Feel free to browse our collection.");
   };
 
   return (
@@ -294,11 +289,21 @@ export default function Cart() {
               <span>₹{getCartTotal()}</span>
             </div>
 
+            <div className="bg-[#febac4]/40 border border-[#7e0022]/20 rounded-2xl p-4 text-center mt-3 space-y-1.5">
+              <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#febac4] text-[#7e0022] border border-[#7e0022]/20">
+                <Sparkles size={11} className="text-[#7e0022]" /> Orders Paused • Launching Soon
+              </span>
+              <p className="text-[11px] text-[#7e0022] font-medium leading-relaxed">
+                All Comfi products are launching soon! Checkout is paused while we prepare for official launch day.
+              </p>
+            </div>
+
             <button
-              onClick={handleCheckoutRedirect}
-              className="w-full bg-[#d0385c] text-white hover:bg-[#5c0018] py-4 rounded-full font-bold text-xs uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg flex items-center justify-center gap-2 cursor-pointer mt-2"
+              type="button"
+              disabled
+              className="w-full bg-[#3a3a3a]/15 text-[#3a3a3a]/40 py-4 rounded-full font-bold text-xs uppercase tracking-widest cursor-not-allowed flex items-center justify-center gap-2 mt-2"
             >
-              Proceed to Checkout <ArrowRight size={14} />
+              Checkout Paused (Launching Soon)
             </button>
             
             <Link 

@@ -125,38 +125,13 @@ export function AppProvider({ children }) {
     localStorage.removeItem('comfi_token');
   };
 
-  // Cart helper methods
+  // Cart helper methods (Orders paused during pre-launch preview)
   const addToCart = (product, quantity = 1, customPackDetails = null) => {
-    setCart(prevCart => {
-      const cartItemId = customPackDetails 
-        ? `${product.id}_custom_${Math.random().toString(36).substr(2, 9)}`
-        : product.id;
-
-      if (!customPackDetails) {
-        const existingIdx = prevCart.findIndex(item => item.id === product.id && !item.customPackDetails);
-        if (existingIdx > -1) {
-          const updatedCart = [...prevCart];
-          updatedCart[existingIdx].quantity += quantity;
-          return updatedCart;
-        }
-      }
-
-      const updated = [
-        ...prevCart,
-        {
-          cartItemId,
-          id: product.id,
-          name: product.name,
-          size: product.size,
-          packCount: product.packCount,
-          price: product.price,
-          quantity,
-          customPackDetails,
-        }
-      ];
-      localStorage.setItem('comfi_cart', JSON.stringify(updated));
-      return updated;
-    });
+    if (showToast) {
+      showToast("All products are launching soon! Ordering is currently paused.", "Orders Paused");
+    } else {
+      alert("All products are launching soon! Ordering is currently paused.");
+    }
   };
 
   const removeFromCart = (cartItemId) => {

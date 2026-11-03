@@ -143,6 +143,12 @@ export default function Checkout() {
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
+    alert("Orders cannot be placed at this time. All Comfi products are launching soon! Explore the collection while we prepare for launch.");
+    return;
+  };
+
+  const disabled_handlePlaceOrder = async (e) => {
+    e.preventDefault();
     setError('');
 
     if (!shippingForm.name || !shippingForm.address || !shippingForm.city || !shippingForm.postalCode || !shippingForm.phone) {
@@ -309,6 +315,30 @@ export default function Checkout() {
         </h1>
       </ScrollReveal>
 
+      {/* Pre-Launch Orders Paused Notice */}
+      <div className="bg-[#febac4] border border-[#7e0022]/20 rounded-2xl p-4 sm:p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-[#7e0022] text-[#febac4] flex items-center justify-center shrink-0 shadow-xs">
+            <Sparkles size={18} />
+          </div>
+          <div>
+            <div className="text-xs font-black uppercase tracking-wider text-[#7e0022]">
+              Orders Paused • Pre-Launch Preview Mode
+            </div>
+            <p className="text-xs text-[#7e0022]/85 font-medium mt-0.5 leading-relaxed">
+              All Comfi products are launching soon! Checkout and orders are paused until our official drop. You are welcome to browse our products, fit quiz, and custom pack builder.
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => router.push('/shop')}
+          className="bg-[#7e0022] hover:bg-[#5c0018] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap shadow-xs cursor-pointer"
+        >
+          Browse Catalog →
+        </button>
+      </div>
+
       {error && (
         <div className="bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded-2xl mb-8 text-xs font-bold font-sans">
           {error}
@@ -442,21 +472,18 @@ export default function Checkout() {
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#d0385c] text-white hover:bg-[#5c0018] py-4 rounded-full font-bold text-xs uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-          >
-            {loading ? (
-              <>
-                <Loader2 size={16} className="animate-spin" /> Processing Payment...
-              </>
-            ) : (
-              <>
-                <CreditCard size={16} /> Proceed to Pay (₹{finalPayable})
-              </>
-            )}
-          </button>
+          <div className="space-y-2">
+            <button
+              type="button"
+              disabled
+              className="w-full bg-[#3a3a3a]/15 text-[#3a3a3a]/50 py-4 rounded-full font-bold text-xs uppercase tracking-widest cursor-not-allowed flex items-center justify-center gap-2 border border-[#3a3a3a]/10"
+            >
+              <Sparkles size={16} /> Orders Paused — Launching Soon
+            </button>
+            <p className="text-[11px] text-center text-[#7e0022] font-semibold">
+              Checkout will unlock when Comfi officially launches.
+            </p>
+          </div>
         </form>
 
         {/* Right Column: Order Summary, Coupons & GSTIN (Span 5) */}
